@@ -87,16 +87,10 @@ public class InternService implements ICrud<InternEntity> {
 	}
 	
 	public List<InternEntity> findNamebyAge(String name, int age) {
-		LocalDate startDate = LocalDate.now().minusYears(age);
-		LocalDate endDate = LocalDate.now().minusYears(age + 1);
-		
-		//LocalDate startDate = LocalDate.of(1967, 9, 02);
-		//LocalDate endDate = LocalDate.of(1968, 9, 01);
-		
-		Date debutDate = (Date) Date.from(startDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-		
-		Date finDate = (Date) Date.from(endDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-		return this.internRepository.findByNameAndBirthDateBetween(name, debutDate, finDate);
-		//return new ArrayList<>();
+		LocalDate startDate = LocalDate.now().minusYears(age + 1).plusDays(1);
+		LocalDate endDate = LocalDate.now().minusYears(age);
+
+		return this.internRepository.findByNameAndBirthDateBetween(name, 
+				java.sql.Date.valueOf(startDate), java.sql.Date.valueOf(endDate));
 	}
 }
